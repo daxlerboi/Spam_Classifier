@@ -7,6 +7,8 @@
 
 Built by `daxler_boi`
 
+Try it live: [https://spam-classifier-dvfd.onrender.com/](https://spam-classifier-dvfd.onrender.com/)
+
 Spam Classifier is a small Python machine learning project that detects whether an incoming text message is **spam** or **ham** (legitimate). It trains a model on real SMS data, saves the trained pipeline, and serves predictions through a lightweight web API with a dark-mode frontend.
 
 ## What It Does
