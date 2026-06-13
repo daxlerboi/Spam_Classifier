@@ -269,7 +269,7 @@
     function renderSidebar(manifest) {
       const sections = manifest.sections || [];
       if (sections.length === 0 || sections.every(s => (s.groups || []).length === 0)) {
-        sidebar.innerHTML = '<div class="sidebar-empty">No mockups yet.<br>Run the <code>opendesign</code> skill to create one.</div>';
+        sidebar.innerHTML = '<div class="sidebar-empty">No mockups yet.<br>Run the <code>design_dev</code> skill to create one.</div>';
         return;
       }
 
@@ -314,7 +314,7 @@
         renderSidebar(manifest);
       } catch (err) {
         console.warn('[OpenDesign viewer] Failed to load manifest:', err);
-        sidebar.innerHTML = '<div class="sidebar-empty">No mockups yet.<br>Run the <code>opendesign</code> skill to create one.</div>';
+        sidebar.innerHTML = '<div class="sidebar-empty">No mockups yet.<br>Run the <code>design_dev</code> skill to create one.</div>';
       }
     }
 
