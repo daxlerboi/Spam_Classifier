@@ -1,0 +1,25 @@
+{
+  "generated": "2026-06-12T10:25:00.000Z",
+  "sections": [
+    {
+      "id": "mockups",
+      "label": "Mockups",
+      "groups": [
+        {
+          "slug": "frontend",
+          "files": [
+            {
+              "label": "index.html",
+              "path": "frontend/index.html"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "design-systems",
+      "label": "Design Systems",
+      "groups": []
+    }
+  ]
+}

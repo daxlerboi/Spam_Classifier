@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spam Classifier</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: #fafafa;
+    color: #111;
+    line-height: 1.5;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 60px 20px;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 520px;
+  }
+
+  /* ── Header ── */
+  header { margin-bottom: 48px; }
+  h1 {
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+  .subtitle {
+    font-size: 14px;
+    color: #888;
+    margin-top: 6px;
+  }
+
+  /* ── Stats ── */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 48px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid #eee;
+  }
+  .stat-block {}
+  .stat-block .val {
+    font-size: 20px;
+    font-weight: 600;
+    color: #111;
+  }
+  .stat-block .lbl {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #aaa;
+    margin-top: 4px;
+  }
+
+  /* ── Form ── */
+  label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #999;
+    margin-bottom: 8px;
+  }
+  textarea {
+    width: 100%;
+    height: 140px;
+    padding: 14px;
+    border: 1px solid #ddd;
+    border-radius: 0;
+    font-family: inherit;
+    font-size: 15px;
+    line-height: 1.5;
+    resize: none;
+    outline: none;
+    background: #fff;
+    transition: border-color 0.2s;
+  }
+  textarea:focus { border-color: #111; }
+  textarea::placeholder { color: #bbb; }
+
+  button {
+    margin-top: 12px;
+    padding: 14px 24px;
+    background: #111;
+    color: #fff;
+    border: none;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.15s;
+  }
+  button:hover { background: #333; }
+  button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+
+  /* ── Result ── */
+  .result {
+    margin-top: 48px;
+    padding-top: 32px;
+    border-top: 1px solid #eee;
+    display: none;
+  }
+  .result-label {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .result-meta {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 24px;
+  }
+  .bars {
+    display: flex;
+    height: 4px;
+    background: #eee;
+    margin-top: 8px;
+  }
+  .bars span {
+    height: 100%;
+    transition: width 0.4s ease;
+  }
+  .bar-spam { background: #d32f2f; }
+  .bar-ham { background: #388e3c; }
+  .legend {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #999;
+    margin-top: 8px;
+  }
+
+  /* ── Examples ── */
+  .examples {
+    margin-top: 48px;
+    padding-top: 32px;
+    border-top: 1px solid #eee;
+  }
+  .examples-title {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #999;
+    margin-bottom: 12px;
+  }
+  .chip {
+    display: inline-block;
+    padding: 8px 14px;
+    margin: 0 8px 8px 0;
+    border: 1px solid #e0e0e0;
+    font-size: 13px;
+    color: #555;
+    cursor: pointer;
+    background: #fff;
+    transition: all 0.15s;
+  }
+  .chip:hover {
+    border-color: #111;
+    color: #111;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid #eee;
+    font-size: 12px;
+    color: #bbb;
+  }
+  .footer a { color: #888; text-decoration: none; }
+  .footer a:hover { color: #111; }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>Spam Classifier</h1>
+    <p class="subtitle">TF-IDF + Multinomial Naive Bayes</p>
+  </header>
+
+  <div class="stats">
+    <div class="stat-block">
+      <div class="val" id="sAccuracy">—</div>
+      <div class="lbl">Accuracy</div>
+    </div>
+    <div class="stat-block">
+      <div class="val" id="sSamples">—</div>
+      <div class="lbl">Messages</div>
+    </div>
+    <div class="stat-block">
+      <div class="val" id="sFeatures">—</div>
+      <div class="lbl">Features</div>
+    </div>
+  </div>
+
+  <label for="msg">Message</label>
+  <textarea id="msg" placeholder="Type or paste a message to classify..."></textarea>
+  <button id="btn" onclick="predict()">Analyze</button>
+
+  <div class="result" id="result">
+    <div class="result-label" id="badge"></div>
+    <div class="result-meta" id="meta"></div>
+    <div class="bars">
+      <span class="bar-spam" id="spamBar" style="width:0%"></span>
+      <span class="bar-ham" id="hamBar" style="width:100%"></span>
+    </div>
+    <div class="legend">
+      <span id="spamPct">0% spam</span>
+      <span id="hamPct">100% ham</span>
+    </div>
+  </div>
+
+  <div class="examples">
+    <div class="examples-title">Examples</div>
+    <span class="chip" onclick="fill('Win a free iPhone now!!! Click here')">Spam: Win free iPhone</span>
+    <span class="chip" onclick="fill('Hey are we meeting at 3pm today?')">Ham: Meeting</span>
+    <span class="chip" onclick="fill('URGENT: Your account has been compromised!')">Spam: Fake alert</span>
+    <span class="chip" onclick="fill('Can you review my code changes')">Ham: Code review</span>
+    <span class="chip" onclick="fill('Exclusive 90% off limited time offer')">Spam: Discount</span>
+    <span class="chip" onclick="fill('Thanks for the help, really appreciate it')">Ham: Thank you</span>
+  </div>
+
+  <div class="footer">
+    <a href="/docs" target="_blank"> Spoiler</a>
+  </div>
+</div>
+
+<script>
+const API = "/predict";
+
+(async function loadStats() {
+  try {
+    const r = await fetch("/health");
+    const d = await r.json();
+    document.getElementById("sAccuracy").textContent = d.accuracy;
+    document.getElementById("sSamples").textContent  = d.n_samples.toLocaleString();
+    document.getElementById("sFeatures").textContent = d.features.toLocaleString();
+  } catch(e) { /* silently ignore */ }
+})();
+
+function fill(text) {
+  document.getElementById("msg").value = text;
+  predict();
+}
+
+async function predict() {
+  const text = document.getElementById("msg").value.trim();
+  if (!text) return;
+
+  const btn = document.getElementById("btn");
+  const res = document.getElementById("result");
+  btn.disabled = true;
+  btn.textContent = "Analyzing...";
+
+  try {
+    const r = await fetch(API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: text }),
+    });
+    const d = await r.json();
+
+    res.style.display = "block";
+    document.getElementById("badge").textContent = d.label;
+    document.getElementById("meta").textContent = "Confidence: " + (d.confidence * 100).toFixed(1) + "%";
+
+    const spamPct = (d.spam_probability * 100).toFixed(0);
+    const hamPct  = (d.ham_probability * 100).toFixed(0);
+    document.getElementById("spamBar").style.width = spamPct + "%";
+    document.getElementById("hamBar").style.width  = hamPct + "%";
+    document.getElementById("spamPct").textContent = spamPct + "% spam";
+    document.getElementById("hamPct").textContent  = hamPct  + "% ham";
+
+  } catch (e) {
+    res.style.display = "block";
+    document.getElementById("badge").textContent = "Error";
+    document.getElementById("meta").textContent = "Could not reach API. Is it running?";
+  }
+
+  btn.disabled = false;
+  btn.textContent = "Analyze";
+}
+</script>
+</body>
+</html>
