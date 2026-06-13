@@ -35,7 +35,7 @@
       height: 100vh;
     }
 
-    /* ── Sidebar ── */
+    
     .sidebar {
       width: var(--sidebar-width);
       flex-shrink: 0;
@@ -65,7 +65,7 @@
       padding: 8px 0;
     }
 
-    /* Section label (Mockups / Design Systems) */
+    
     .section-label {
       padding: 12px 12px 4px;
       font-size: 10px;
@@ -75,7 +75,7 @@
       color: var(--sidebar-muted);
     }
 
-    /* Group = collapsible folder */
+    
     details.group {
       margin-bottom: 2px;
     }
@@ -110,7 +110,7 @@
       transform: rotate(90deg);
     }
 
-    /* File item */
+    
     .file-item {
       display: block;
       padding: 4px 12px 4px 28px;
@@ -133,7 +133,7 @@
       border-left-color: var(--accent);
     }
 
-    /* ── Preview ── */
+    
     .preview {
       flex: 1;
       display: flex;
@@ -179,7 +179,7 @@
       background: #fff;
     }
 
-    /* Empty state */
+    
     .empty-state {
       flex: 1;
       display: flex;
@@ -286,7 +286,7 @@
 
           html += `<details class="group" open><summary>${esc(group.slug)}</summary>`;
           for (const file of files) {
-            // Use data attributes; attach listeners after inserting
+
             html += `<span class="file-item" tabindex="0" data-path="${esc(file.path)}" data-label="${esc(file.label)}">${esc(file.label)}</span>`;
           }
           html += `</details>`;
@@ -295,7 +295,6 @@
 
       sidebar.innerHTML = html;
 
-      // Attach click and keyboard listeners
       sidebar.querySelectorAll('.file-item').forEach(el => {
         el.addEventListener('click', () => loadFile(el.dataset.path, el.dataset.label, el));
         el.addEventListener('keydown', e => {

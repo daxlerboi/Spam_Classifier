@@ -24,7 +24,7 @@
     max-width: 520px;
   }
 
-  /* ── Header ── */
+  
   header { margin-bottom: 48px; }
   h1 {
     font-size: 28px;
@@ -38,7 +38,7 @@
     margin-top: 6px;
   }
 
-  /* ── Stats ── */
+  
   .stats {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -61,7 +61,7 @@
     margin-top: 4px;
   }
 
-  /* ── Form ── */
+  
   label {
     display: block;
     font-size: 11px;
@@ -107,7 +107,7 @@
     cursor: not-allowed;
   }
 
-  /* ── Result ── */
+  
   .result {
     margin-top: 48px;
     padding-top: 32px;
@@ -144,7 +144,7 @@
     margin-top: 8px;
   }
 
-  /* ── Examples ── */
+  
   .examples {
     margin-top: 48px;
     padding-top: 32px;
@@ -174,7 +174,7 @@
     color: #111;
   }
 
-  /* ── Footer ── */
+  
   .footer {
     margin-top: 60px;
     padding-top: 24px;
@@ -250,7 +250,7 @@ const API = "/predict";
     document.getElementById("sAccuracy").textContent = d.accuracy;
     document.getElementById("sSamples").textContent  = d.n_samples.toLocaleString();
     document.getElementById("sFeatures").textContent = d.features.toLocaleString();
-  } catch(e) { /* silently ignore */ }
+  } catch(e) {  }
 })();
 
 function fill(text) {

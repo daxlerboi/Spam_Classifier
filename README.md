@@ -555,7 +555,7 @@ async function predict() {
 
     // Update the result box
     res.className = "result " + d.label.toLowerCase();
-    document.getElementById("badge").textContent = d.label === "SPAM" ? "⚠ SPAM" : "✅ HAM";
+    document.getElementById("badge").textContent = d.label === "SPAM" ? "SPAM" : "HAM";
     document.getElementById("meta").textContent = `Confidence: ${(d.confidence * 100).toFixed(1)}%`;
 
     // Animate the probability bar
@@ -566,7 +566,7 @@ async function predict() {
 
   } catch (e) {
     res.className = "result spam";
-    document.getElementById("badge").textContent = "⚠ ERROR";
+    document.getElementById("badge").textContent = "ERROR";
     document.getElementById("meta").textContent = "Is the API running? Start with: python -m api.main";
     res.style.display = "block";
   }
@@ -626,22 +626,22 @@ Sample training output:
 ================================================== SPAM CLASSIFIER — Training Pipeline
 ==================================================
 
-📂 Loading data from data/spam.csv...
+Loading data from data/spam.csv...
    Delimiter: TAB
    Header: False | First field: 'ham'
-📊 Dataset: 5572 messages (747 spam, 4825 ham)
+Dataset: 5572 messages (747 spam, 4825 ham)
    Spam ratio: 13.4%
-📚 Training set: 4457 | 🧪 Test set: 1115
+Training set: 4457 | Test set: 1115
 
-🔧 Building pipeline: TF-IDF → MultinomialNB
-🏋️ Training...
-✅ Done
+Building pipeline: TF-IDF → MultinomialNB
+️ Training...
+Done
 
-🔄 Running 5-fold cross-validation...
+Running 5-fold cross-validation...
    CV F1 scores: ['0.932', '0.918', '0.940', '0.905', '0.934']
    Mean F1: 0.926 (±0.013)
 
-================================================== 📈 TEST SET PERFORMANCE
+================================================== TEST SET PERFORMANCE
 ==================================================
    Accuracy : 98.21%
    Precision: 97.78% (flagged spam → actually spam)
@@ -655,9 +655,9 @@ Sample training output:
           Spam [ 17   132]
 ==================================================
 
-💾 Saved: model/spam_model.pkl
-💾 Saved: model/metrics.json
-🎉 Training complete! Model ready for serving.
+Saved: model/spam_model.pkl
+Saved: model/metrics.json
+Training complete! Model ready for serving.
 ```
 
 ### Step 2: Start the API server
@@ -671,10 +671,10 @@ python -m api.main
 Terminal output:
 
 ```text
- Loading model...
- Model loaded — 5000 features, 98.2% accuracy
+Loading model...
+Model loaded — 5000 features, 98.2% accuracy
 
- Server running on http://127.0.0.1:8000
+Server running on http://127.0.0.1:8000
    UI    → http://127.0.0.1:8000/
    Docs  → http://127.0.0.1:8000/docs
 ```
