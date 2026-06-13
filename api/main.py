@@ -111,7 +111,8 @@ def health(request: Request):
     }
 
 @app.get("/metrics")
-def get_metrics():
+@limiter.limit("60/minute")
+def get_metrics(request: Request):
     """Full performance metrics."""
     return metrics
 
